@@ -148,7 +148,10 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoadDataActionPerformed
 
     private void btnSeeDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeeDataActionPerformed
-        // TODO add your handling code here:
+        
+        SeeData screen = new SeeData();
+        screen.setVisible(true);
+        screen.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnSeeDataActionPerformed
 
     

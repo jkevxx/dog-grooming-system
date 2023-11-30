@@ -1,6 +1,7 @@
 package com.mycompany.doggrooming.logic;
 
 import com.mycompany.doggrooming.persistence.PersistenceController;
+import java.util.List;
 
 /**
  *
@@ -27,6 +28,10 @@ public class Controller {
         pet.setOneOwner(owner);
         
         persistenceController.save(owner, pet);
+    }
+
+    public List<Pet> getPets() {
+        return persistenceController.getPets();
     }
     
 }
