@@ -10,7 +10,7 @@ import java.util.List;
 public class Controller {
     PersistenceController persistenceController = new PersistenceController();
 
-    public void save(String petName, String breed, String color, 
+    public void saveRegister(String petName, String breed, String color, 
             String allergic, String specialAttention, String ownerName, 
             String ownerPhone, String observations) {
         
@@ -27,11 +27,15 @@ public class Controller {
         pet.setObservations(observations);
         pet.setOneOwner(owner);
         
-        persistenceController.save(owner, pet);
+        persistenceController.saveOwnerPet(owner, pet);
     }
 
     public List<Pet> getPets() {
-        return persistenceController.getPets();
+        return persistenceController.getPetList();
+    }
+
+    public void deletePet(int client_num) {
+        persistenceController.removePet(client_num);
     }
     
 }

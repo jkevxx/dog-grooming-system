@@ -3,6 +3,8 @@ package com.mycompany.doggrooming.gui;
 import com.mycompany.doggrooming.logic.Controller;
 import com.mycompany.doggrooming.logic.Pet;
 import java.util.List;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -81,6 +83,11 @@ public class SeeData extends javax.swing.JFrame {
 
         btnDelete.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnEdit.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnEdit.setText("Edit");
@@ -155,6 +162,39 @@ public class SeeData extends javax.swing.JFrame {
         loadTable();
     }//GEN-LAST:event_formWindowOpened
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // verify empty table
+        if (screenInfoTable.getRowCount() != 0) {
+            // pet has been selected
+            if (screenInfoTable.getSelectedRow() != -1) {
+                int client_num = Integer.parseInt(
+                        String.valueOf(screenInfoTable.getValueAt(screenInfoTable.getSelectedRow(), 0))
+                );
+                controller.deletePet(client_num);
+                showMessage("Pet deleted successfully", "info", "Pet Deleted");
+                loadTable();
+            } else {
+                showMessage("No pet selected", "error", "Delete error");
+            }
+        } else {
+            showMessage("There is not information", "error", "Delete error");
+        }
+
+    }//GEN-LAST:event_btnDeleteActionPerformed
+    
+    public void showMessage(String message, String type, String title) {
+        
+        JOptionPane optionPane = new JOptionPane(message);
+        if ( type.equals("info")) {
+            optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+        } 
+        if (type.equals("error")) {
+            optionPane.setMessageType(JOptionPane.ERROR_MESSAGE);
+        }
+        JDialog dialog = optionPane.createDialog(title);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
@@ -184,18 +224,18 @@ public class SeeData extends javax.swing.JFrame {
 
         // loading data from database
         List<Pet> petList = controller.getPets();
-        
+
         // iterate lisf and show each element in the table
         if (petList != null) {
             for (Pet pet : petList) {
-                Object[] petObject = {pet.getNum_Owner(), pet.getName(), pet.getColor(), 
+                Object[] petObject = {pet.getNum_Owner(), pet.getName(), pet.getColor(),
                     pet.getBreed(), pet.getAllergic(), pet.getSpecialAttention(), pet.getObservations(),
-                    pet.getOneOwner().getName(), pet.getOneOwner().getOwnerPhone() };
-                
+                    pet.getOneOwner().getName(), pet.getOneOwner().getOwnerPhone()};
+
                 table.addRow(petObject);
             }
         }
-        
+
         screenInfoTable.setModel(table);
     }
 }

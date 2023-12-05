@@ -447,7 +447,7 @@ public class LoadData extends javax.swing.JFrame {
         String allergic = (String) cmbAllergic.getSelectedItem();
         String specialAttention = (String) cmbSpecialAttention.getSelectedItem();
         
-        controller.save(txtName.getText(),
+        controller.saveRegister(txtName.getText(),
                 txtBreed.getText(),
                 txtColor.getText(),
                 allergic,
