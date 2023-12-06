@@ -31,4 +31,29 @@ public class PersistenceController {
             Logger.getLogger(PersistenceController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public Pet getOnePet(int client_num) {
+        return petJpa.findPet(client_num);
+    }
+
+    public void modifyPet(Pet pet) {
+        try {
+            petJpa.edit(pet);
+        } catch (Exception ex) {
+            Logger.getLogger(PersistenceController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Owner getOwner(int id_owner) {
+        return ownerJpa.findOwner(id_owner);
+    }
+
+    public void modifyOwner(Owner owner) {
+        try {
+            ownerJpa.edit(owner);
+        } catch (Exception ex) {
+            Logger.getLogger(PersistenceController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+ 
 }

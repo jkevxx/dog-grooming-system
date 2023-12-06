@@ -92,6 +92,11 @@ public class SeeData extends javax.swing.JFrame {
         btnEdit.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnEdit.setText("Edit");
         btnEdit.setMaximumSize(new java.awt.Dimension(80, 32));
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -173,6 +178,7 @@ public class SeeData extends javax.swing.JFrame {
                 controller.deletePet(client_num);
                 showMessage("Pet deleted successfully", "info", "Pet Deleted");
                 loadTable();
+                
             } else {
                 showMessage("No pet selected", "error", "Delete error");
             }
@@ -181,6 +187,29 @@ public class SeeData extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // verify empty table
+        if (screenInfoTable.getRowCount() != 0) {
+            // pet has been selected
+            if (screenInfoTable.getSelectedRow() != -1) {
+                int client_num = Integer.parseInt(
+                        String.valueOf(screenInfoTable.getValueAt(screenInfoTable.getSelectedRow(), 0))
+                );
+                EditData editDataWindow = new EditData(client_num);
+                editDataWindow.setVisible(true);
+                editDataWindow.setLocationRelativeTo(null);
+                this.dispose();
+                
+            } else {
+                showMessage("No pet selected", "error", "Delete error");
+            }
+        } else {
+            showMessage("There is not information", "error", "Delete error");
+        }
+        
+        
+    }//GEN-LAST:event_btnEditActionPerformed
     
     public void showMessage(String message, String type, String title) {
         

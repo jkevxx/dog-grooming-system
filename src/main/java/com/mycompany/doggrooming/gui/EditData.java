@@ -1,6 +1,7 @@
 package com.mycompany.doggrooming.gui;
 
 import com.mycompany.doggrooming.logic.Controller;
+import com.mycompany.doggrooming.logic.Pet;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
@@ -8,16 +9,21 @@ import javax.swing.JOptionPane;
  *
  * @author Mr_Paez
  */
-public class LoadData extends javax.swing.JFrame {
-    
-    Controller controller = new Controller();
+public class EditData extends javax.swing.JFrame {
+
+    Controller controller = null;
+    Pet pet;
 
     /**
      * Creates new form LoadData
+     *
+     * @param client_num
      */
-    public LoadData() {
-        //controller = new Controller();
+    public EditData(int client_num) {
+        controller = new Controller();
+
         initComponents();
+        loadDataInForm(client_num);
     }
 
     /**
@@ -444,27 +450,25 @@ public class LoadData extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         
+        String petName = txtName.getText();
+        String breed = txtBreed.getText();
+        String color = txtColor.getText();
+        String ownerName = txtOwnerName.getText();
+        String ownerPhone = txtOwnerPhone.getText();
+        String observations = txtObservation.getText();
         String allergic = (String) cmbAllergic.getSelectedItem();
         String specialAttention = (String) cmbSpecialAttention.getSelectedItem();
+
+        controller.updatePet(pet, petName, breed, color, allergic, specialAttention, observations, ownerName, ownerPhone);
+
+        showMessage("Register updated successfully", "info", "Correct Edition");
         
-        controller.saveRegister(txtName.getText(),
-                txtBreed.getText(),
-                txtColor.getText(),
-                allergic,
-                specialAttention,
-                txtOwnerName.getText(),
-                txtOwnerPhone.getText(),
-                txtObservation.getText());
-        
-        JOptionPane optionPane = new JOptionPane("Data saved succesfully");
-        optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
-        JDialog dialog = optionPane.createDialog("Data Saved");
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(true);
+        SeeData seeDataWindow = new SeeData();
+        seeDataWindow.setVisible(true);
+        seeDataWindow.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_btnSaveActionPerformed
 
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClear;
@@ -499,4 +503,44 @@ public class LoadData extends javax.swing.JFrame {
     private javax.swing.JTextField txtOwnerName;
     private javax.swing.JTextField txtOwnerPhone;
     // End of variables declaration//GEN-END:variables
+
+    private void loadDataInForm(int client_num) {
+        this.pet = controller.getPetByOwnerId(client_num);
+        txtName.setText(pet.getName());
+        txtBreed.setText(pet.getBreed());
+        txtColor.setText(pet.getColor());
+        txtOwnerName.setText(pet.getOneOwner().getName());
+        txtOwnerPhone.setText(pet.getOneOwner().getOwnerPhone());
+        txtObservation.setText(pet.getObservations());
+
+        if (pet.getAllergic().equals("Si")) {
+            cmbAllergic.setSelectedIndex(1);
+        } else if (pet.getAllergic().equals("No")) {
+            cmbAllergic.setSelectedIndex(2);
+        } else {
+            cmbAllergic.setSelectedIndex(0);
+        }
+        
+        if (pet.getSpecialAttention().equals("Si")) {
+            cmbSpecialAttention.setSelectedIndex(1);
+        } else if (pet.getSpecialAttention().equals("No")) {
+            cmbSpecialAttention.setSelectedIndex(2);
+        } else {
+            cmbSpecialAttention.setSelectedIndex(0);
+        }
+    }
+    
+    public void showMessage(String message, String type, String title) {
+        
+        JOptionPane optionPane = new JOptionPane(message);
+        if ( type.equals("info")) {
+            optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+        } 
+        if (type.equals("error")) {
+            optionPane.setMessageType(JOptionPane.ERROR_MESSAGE);
+        }
+        JDialog dialog = optionPane.createDialog(title);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+    }
 }
